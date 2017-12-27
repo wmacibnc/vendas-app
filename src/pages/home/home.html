@@ -1,12 +1,15 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Storage Example
+      Minhas vendas
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+<ion-searchbar [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()"></ion-searchbar> 
+
   <ion-list>
     <ion-card *ngFor="let item of contacts" [ngClass]="{'item-inactive': !item.contact.active }">
 

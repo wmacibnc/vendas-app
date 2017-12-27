@@ -8,18 +8,36 @@ import { ContactProvider, Contact, ContactList } from '../../providers/contact/c
 })
 export class HomePage {
   contacts: ContactList[];
+  searchTerm: string = '';
 
   constructor(public navCtrl: NavController, private contactProvider: ContactProvider, private toast: ToastController) { }
 
   ionViewDidEnter() {
+
+    this.setFilteredItems();
+
     this.contactProvider.getAll()
       .then((result) => {
         this.contacts = result;
       });
   }
 
+  setFilteredItems() {
+    this.contactProvider.getAll().then((result) => {
+      this.contacts = this.filterItems(this.searchTerm, result);
+    });    
+  }
+
+
+  filterItems(searchTerm, contacts){
+    return contacts && contacts.filter((item) => {
+      return item.contact.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    });    
+  }
+
   addContact() {
-    this.navCtrl.push('EditContactPage');
+    // this.navCtrl.push('EditContactPage');
+    this.navCtrl.push('NovaVendaPage');
   }
 
   editContact(item: ContactList) {
