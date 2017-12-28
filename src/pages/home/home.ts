@@ -9,6 +9,11 @@ import { VendasProvider, VendaList } from '../../providers/vendas/vendas';
 export class HomePage {
   vendas: VendaList[];
   searchTerm: string = '';
+  searchMarca: string = '';
+  searchDataInicio: Date = new Date();
+  searchDataFim: Date = new Date();
+  searchNumeracao : number = 0;
+  searchPagamento : number = 0;
 
   constructor(public navCtrl: NavController, private vendasProvider: VendasProvider, private toast: ToastController) { }
 
@@ -28,6 +33,65 @@ export class HomePage {
     });    
   }
 
+  setFilteredDataInicio(){
+  this.vendasProvider.getAll().then((result) => {
+      this.vendas = this.filterItemsPorDataInicio(this.searchDataInicio, result);
+    });    
+  }
+
+  setFilteredDataFim(){
+  this.vendasProvider.getAll().then((result) => {
+      this.vendas = this.filterItemsPorDataFim(this.searchDataFim, result);
+    });    
+  }
+
+  setFilteredMarcas() {
+    this.vendasProvider.getAll().then((result) => {
+      this.vendas = this.filterItemsPorMarca(this.searchMarca, result);
+    });    
+  }
+
+  setFilteredNumeracao() {
+    this.vendasProvider.getAll().then((result) => {
+      this.vendas = this.filterItemsNumeracao(this.searchNumeracao, result);
+    });    
+  }
+
+  setFilteredPagamento() {
+    this.vendasProvider.getAll().then((result) => {
+      this.vendas = this.filterItemsPagamento(this.searchPagamento, result);
+    });    
+  }
+
+  filterItemsNumeracao(searchTerm, vendas){
+    return vendas && vendas.filter((item) => {
+      return item && item.venda && item.venda.data && item.venda.numeracao === searchTerm;
+    });    
+  }
+
+  filterItemsPagamento(searchTerm, vendas){
+    return vendas && vendas.filter((item) => {
+      return item && item.venda && item.venda.data && item.venda.pagamento ===searchTerm;
+    });    
+  }
+
+  filterItemsPorDataInicio(searchTerm, vendas){
+    return vendas && vendas.filter((item) => {
+      return item && item.venda && item.venda.data && item.venda.data >= searchTerm;
+    });    
+  }
+
+  filterItemsPorDataFim(searchTerm, vendas){
+    return vendas && vendas.filter((item) => {
+      return item && item.venda && item.venda.data && item.venda.data <= searchTerm;
+    });    
+  }
+
+  filterItemsPorMarca(searchTerm, vendas){
+    return vendas && vendas.filter((item) => {
+      return item && item.venda && item.venda.marca && item.venda.marca.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    });    
+  }
 
   filterItems(searchTerm, vendas){
     return vendas && vendas.filter((item) => {

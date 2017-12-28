@@ -20,7 +20,6 @@
       <ion-input type="number" name="telefone" [(ngModel)]="model.telefone"></ion-input>
     </ion-item>
 
-
     <ion-item>
       <ion-label stacked>Marca/Modelo</ion-label>
       <ion-input type="text" name="marca" [(ngModel)]="model.marca"></ion-input>
@@ -46,35 +45,35 @@
       <ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="model.data"></ion-datetime>
     </ion-item>
 
-  <ion-row>
-    <ion-list col-6>
-      <ion-item>
-        <ion-label stacked>Forma de Pagamento</ion-label>
-        <ion-select [(ngModel)]="model.pagamento">
-          <ion-option value="1">À vista</ion-option>
-          <ion-option value="2">Parcelado</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+    <ion-row>
+      <ion-list col-6>
+        <ion-item>
+          <ion-label stacked>Forma de Pagamento</ion-label>
+          <ion-select [(ngModel)]="model.pagamento">
+            <ion-option value="1">À vista</ion-option>
+            <ion-option value="2">Parcelado</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
 
       <ion-item *ngIf="model.pagamento === '1'" col-6>
-      <ion-label stacked>Valor</ion-label>
-      <ion-input type="number" name="valor" [(ngModel)]="model.valor"></ion-input>
-    </ion-item>
-
-    <ion-list *ngIf="model.pagamento === '2'" col-6>
-      <ion-item>
-        <ion-label stacked>Parcelas</ion-label>
-        <ion-select [(ngModel)]="model.parcelas" (ngModelChange)="atualizarParcelas()">
-          <ion-option value=1>1</ion-option>
-          <ion-option value=2>2</ion-option>
-          <ion-option value=3>3</ion-option>
-          <ion-option value=4>4</ion-option>
-          <ion-option value=5>5</ion-option>
-        </ion-select>
+        <ion-label stacked>Valor</ion-label>
+        <ion-input type="number" name="valor" [(ngModel)]="model.valor"></ion-input>
       </ion-item>
-    </ion-list>
-  </ion-row>
+
+      <ion-list *ngIf="model.pagamento === '2'" col-6>
+        <ion-item>
+          <ion-label stacked>Parcelas</ion-label>
+          <ion-select [(ngModel)]="model.parcelas" (ngModelChange)="atualizarParcelas()">
+            <ion-option value=1>1</ion-option>
+            <ion-option value=2>2</ion-option>
+            <ion-option value=3>3</ion-option>
+            <ion-option value=4>4</ion-option>
+            <ion-option value=5>5</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-row>
 
     <ion-grid *ngIf="model.pagamento === '2'">
 
@@ -89,12 +88,12 @@
         </ion-col>
         <ion-col col-6>
           <br />
-         <ion-item>
-          <ion-label stacked>Data da Entrada</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY" name="model.parcelamento[0]" [(ngModel)]="model.parcelamento[0].data"></ion-datetime>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+          <ion-item>
+            <ion-label stacked>Data da Entrada</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" name="model.parcelamento[0]" [(ngModel)]="model.parcelamento[0].data"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
       <!-- Entrada -->
 
       <ion-row *ngFor = "let n of parcelas">
@@ -107,12 +106,12 @@
         </ion-col>
         <ion-col col-6>
           <br />
-         <ion-item>
-          <ion-label stacked>Data Parcela</ion-label>
-          <ion-datetime displayFormat="DD/MM/YYYY" name="model.parcelamento[n]" [(ngModel)]="model.parcelamento[n].data"></ion-datetime>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+          <ion-item>
+            <ion-label stacked>Data Parcela</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" name="model.parcelamento[n]" [(ngModel)]="model.parcelamento[n].data"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
     </ion-grid>
 

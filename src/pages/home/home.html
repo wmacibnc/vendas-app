@@ -8,44 +8,111 @@
 
 <ion-content padding>
 
-<ion-searchbar [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()"></ion-searchbar> 
+  <ion-label>Pesquisar</ion-label>
 
-  <ion-list>
-    <ion-card *ngFor="let item of vendas" [ngClass]="{'item-inactive': !item.venda.active }">
+  <ion-row>
+    <ion-searchbar col-6 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()"></ion-searchbar> 
+    <ion-searchbar col-6 placeholder="por Modelo"[(ngModel)]="searchMarca" (ionInput)="setFilteredMarcas()"></ion-searchbar>   
+  </ion-row>
 
-      <ion-card-header>
-        <h1>{{ item.venda.nome }}</h1>
-      </ion-card-header>
+  <ion-row>
+    <ion-row col-6>
+      <ion-item>
+        <ion-label stacked>Data da Venda</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicio" (ngModelChange)="setFilteredDataInicio()"></ion-datetime>
+      </ion-item>
+    </ion-row>
 
-      <ion-card-content>
-        <p> <b>Valor: </b>R$ {{ item.venda.valor }} - <b>Telefone:</b> {{ item.venda.telefone }} - <b>Pagamento:</b> {{ item.venda.pagamento === '1' ? 'À Vista'  : 'Parcelado'  }} - <b>Marca/Modelo:</b> {{ item.venda.marca }} - <b>Numeração:</b> {{ item.venda.numeracao }} - <b>Data da Venda: </b>{{ item.venda.data | date:'dd/MM/yyyy' }} </p>
-      </ion-card-content>
+    <ion-row col-6>
+     <ion-item>
+      <ion-label stacked>por Data Fim</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFim" (ngModelChange)="setFilteredDataFim()"></ion-datetime> 
+    </ion-item>
+  </ion-row>
+</ion-row>
 
-      <ion-row text-center>
-        <ion-col>
-          <button ion-button icon-left clear small (click)="editContact(item);">
-            <ion-icon name="create"></ion-icon>
-            <div>Editar</div>
-          </button>
-        </ion-col>
-        <ion-col>
-          <button ion-button icon-left clear small (click)="removeContact(item);">
-            <ion-icon name="trash"></ion-icon>
-            <div>Excluir</div>
-          </button>
-        </ion-col>
-        <ion-col>
-          <a href="tel:{{ item.venda.telefone }}" ion-button icon-left clear small>
-            <ion-icon name="call"></ion-icon>
-            <div>Ligar</div>
-          </a>
-        </ion-col>
-      </ion-row>
+<ion-row>
+ <ion-list col-6>
+  <ion-item>
+    <ion-label stacked>por Numeração</ion-label>
+    <ion-select [(ngModel)]="searchNumeracao" (ngModelChange)="setFilteredNumeracao()">
+      <ion-option value=38>38</ion-option>
+      <ion-option value=39>39</ion-option>
+      <ion-option value=40>40</ion-option>
+      <ion-option value=41>41</ion-option>
+      <ion-option value=42>42</ion-option>
+      <ion-option value=43>43</ion-option>
+      <ion-option value=44>44</ion-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
 
-    </ion-card>
-  </ion-list>
+<ion-list col-6>
+  <ion-item>
+    <ion-label stacked>por Forma Pagamento</ion-label>
+    <ion-select [(ngModel)]="searchPagamento" (ngModelChange)="setFilteredPagamento()">
+     <ion-option value="1">À vista</ion-option>
+     <ion-option value="2">Parcelado</ion-option>
+   </ion-select>
+ </ion-item>
+</ion-list>
+</ion-row>
 
-  <ion-fab right bottom>
-    <button ion-fab color="primary" (click)="addContact()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
+<ion-list>
+  <ion-card *ngFor="let item of vendas" [ngClass]="{'item-inactive': !item.venda.active }">
+
+    <ion-card-header>
+      <h1>{{ item.venda.nome }}</h1>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p> 
+        <b>Valor: </b> 
+        R$ {{ item.venda.valor }} - 
+
+        <b>Telefone:</b> 
+        {{ item.venda.telefone }} - 
+
+        <b>Pagamento:</b> 
+        {{ item.venda.pagamento === '1' ? 'À Vista'  : 'Parcelado'  }} - 
+
+        <b>Marca/Modelo:</b> 
+        {{ item.venda.marca }} - 
+
+        <b>Numeração:</b> 
+        {{ item.venda.numeracao }} - 
+
+        <b>Data da Venda: </b>
+        {{ item.venda.data | date:'dd/MM/yyyy' }} 
+      </p>
+
+    </ion-card-content>
+
+    <ion-row text-center>
+      <ion-col>
+        <button ion-button icon-left clear small (click)="editContact(item);">
+          <ion-icon name="create"></ion-icon>
+          <div>Editar</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-left clear small (click)="removeContact(item);">
+          <ion-icon name="trash"></ion-icon>
+          <div>Excluir</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <a href="tel:{{ item.venda.telefone }}" ion-button icon-left clear small>
+          <ion-icon name="call"></ion-icon>
+          <div>Ligar</div>
+        </a>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+</ion-list>
+
+<ion-fab right bottom>
+  <button ion-fab color="primary" (click)="addContact()"><ion-icon name="add"></ion-icon></button>
+</ion-fab>
 </ion-content>
