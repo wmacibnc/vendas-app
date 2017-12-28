@@ -1,37 +1,37 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
-import { ContactProvider, Contact, ContactList } from '../../providers/contact/contact';
+import { VendasProvider, VendaList } from '../../providers/vendas/vendas';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  contacts: ContactList[];
+  vendas: VendaList[];
   searchTerm: string = '';
 
-  constructor(public navCtrl: NavController, private contactProvider: ContactProvider, private toast: ToastController) { }
+  constructor(public navCtrl: NavController, private vendasProvider: VendasProvider, private toast: ToastController) { }
 
   ionViewDidEnter() {
 
     this.setFilteredItems();
 
-    this.contactProvider.getAll()
+    this.vendasProvider.getAll()
       .then((result) => {
-        this.contacts = result;
+        this.vendas = result;
       });
   }
 
   setFilteredItems() {
-    this.contactProvider.getAll().then((result) => {
-      this.contacts = this.filterItems(this.searchTerm, result);
+    this.vendasProvider.getAll().then((result) => {
+      this.vendas = this.filterItems(this.searchTerm, result);
     });    
   }
 
 
-  filterItems(searchTerm, contacts){
-    return contacts && contacts.filter((item) => {
-      return item.contact.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+  filterItems(searchTerm, vendas){
+    return vendas && vendas.filter((item) => {
+      return item && item.venda && item.venda.nome && item.venda.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });    
   }
 
@@ -40,17 +40,17 @@ export class HomePage {
     this.navCtrl.push('NovaVendaPage');
   }
 
-  editContact(item: ContactList) {
-    this.navCtrl.push('EditContactPage', { key: item.key, contact: item.contact });
+  editContact(item: VendaList) {
+    this.navCtrl.push('NovaVendaPage', { key: item.key, venda: item.venda });
   }
 
-  removeContact(item: ContactList) {
-    this.contactProvider.remove(item.key)
+  removeContact(item: VendaList) {
+    this.vendasProvider.remove(item.key)
       .then(() => {
         // Removendo do array de items
-        var index = this.contacts.indexOf(item);
-        this.contacts.splice(index, 1);
-        this.toast.create({ message: 'Contato removido.', duration: 3000, position: 'botton' }).present();
+        var index = this.vendas.indexOf(item);
+        this.vendas.splice(index, 1);
+        this.toast.create({ message: 'Venda removida.', duration: 3000, position: 'botton' }).present();
       })
   }
 

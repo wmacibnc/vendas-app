@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { IonicStorageModule } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
 import { ContactProvider } from '../providers/contact/contact';
+import { VendasProvider } from '../providers/vendas/vendas';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { ContactProvider } from '../providers/contact/contact';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatePipe,
     ContactProvider,
-    ContactProvider
+    VendasProvider
   ]
 })
 export class AppModule {}

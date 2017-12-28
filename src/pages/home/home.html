@@ -11,14 +11,14 @@
 <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()"></ion-searchbar> 
 
   <ion-list>
-    <ion-card *ngFor="let item of contacts" [ngClass]="{'item-inactive': !item.contact.active }">
+    <ion-card *ngFor="let item of vendas" [ngClass]="{'item-inactive': !item.venda.active }">
 
       <ion-card-header>
-        <h1>{{ item.contact.name }}</h1>
+        <h1>{{ item.venda.nome }}</h1>
       </ion-card-header>
 
       <ion-card-content>
-        <p>{{ item.contact.phone }} - {{ item.contact.birth | date:'dd/MM/yyyy' }} </p>
+        <p> <b>Valor: </b>R$ {{ item.venda.valor }} - <b>Telefone:</b> {{ item.venda.telefone }} - <b>Pagamento:</b> {{ item.venda.pagamento === '1' ? 'À Vista'  : 'Parcelado'  }} - <b>Marca/Modelo:</b> {{ item.venda.marca }} - <b>Numeração:</b> {{ item.venda.numeracao }} - <b>Data da Venda: </b>{{ item.venda.data | date:'dd/MM/yyyy' }} </p>
       </ion-card-content>
 
       <ion-row text-center>
@@ -35,7 +35,7 @@
           </button>
         </ion-col>
         <ion-col>
-          <a href="tel:{{ item.contact.phone }}" ion-button icon-left clear small>
+          <a href="tel:{{ item.venda.telefone }}" ion-button icon-left clear small>
             <ion-icon name="call"></ion-icon>
             <div>Ligar</div>
           </a>

@@ -28,7 +28,7 @@ export class ContactProvider {
   public getAll() {
 
     let contacts: ContactList[] = [];
-
+debugger
     return this.storage.forEach((value: Contact, key: string, iterationNumber: Number) => {
       let contact = new ContactList();
       contact.key = key;
