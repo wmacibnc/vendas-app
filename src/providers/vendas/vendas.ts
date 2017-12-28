@@ -52,6 +52,8 @@ export class Venda {
   data: Date;
   valor: number;
   pagamento: string;
+  parcelamento: any;
+  parcelas: number;
 }
 
 export class VendaList {

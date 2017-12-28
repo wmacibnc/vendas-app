@@ -10,13 +10,22 @@ import { VendasProvider, Venda } from '../../providers/vendas/vendas';
 export class NovaVendaPage {
   model: Venda;
   key: string;
+  parcelas =[];
+  p: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private vendaProvider: VendasProvider, private toast: ToastController) {
     if (this.navParams.data.venda && this.navParams.data.key) {
       this.model = this.navParams.data.venda;
       this.key =  this.navParams.data.key;
+      this.atualizarParcelas();
     } else {
       this.model = new Venda();
+      this.model.parcelamento = [];
+      this.model.parcelamento.push([]);
+      this.model.parcelamento.push([]);
+      this.model.parcelamento.push([]);
+      this.model.parcelamento.push([]);
+      this.model.parcelamento.push([]);
     }
   }
 
@@ -31,7 +40,22 @@ export class NovaVendaPage {
       });
   }
 
+  atualizarParcelas(){
+    this.parcelas = [];
+    for (var i = 1; i <= this.model.parcelas; i++) {
+      this.parcelas.push(i);
+    }
+  }
+
   private saveVenda() {
+    if(this.model.pagamento === '2'){
+      this.model.valor = 0;
+      for(this.p=0; this.p < this.model.parcelamento.length; this.p++){
+        if(this.model.parcelamento[this.p] && this.model.parcelamento[this.p].valor){
+          this.model.valor = (+this.model.parcelamento[this.p].valor) + (this.model.valor);
+        }
+      }
+    }
     if (this.key) {
       return this.vendaProvider.update(this.key, this.model);
     } else {
