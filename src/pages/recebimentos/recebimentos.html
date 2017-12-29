@@ -1,0 +1,78 @@
+<ion-header>
+
+	<ion-navbar>
+		<ion-title>Recebimentos</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<ion-label>Pesquisar</ion-label>
+
+	<ion-row>
+		<ion-searchbar col-12 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="pesquisar()"></ion-searchbar> 
+	</ion-row>
+
+	<ion-row>
+		<ion-row col-6>
+			<ion-item>
+				<ion-label stacked>por Data Inicio</ion-label>
+				<ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicio" (ngModelChange)="pesquisar()"></ion-datetime>
+			</ion-item>
+		</ion-row>
+
+		<ion-row col-6>
+			<ion-item>
+				<ion-label stacked>por Data Fim</ion-label>
+				<ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFim" (ngModelChange)="pesquisar()"></ion-datetime> 
+			</ion-item>
+		</ion-row>
+	</ion-row>
+
+	<ion-list>
+		<ion-card *ngFor="let item of vendas" [ngClass]="{'item-inactive': !item.venda.active }">
+			<ion-card-header>
+				<h1>{{ item.venda.nome }}</h1>
+			</ion-card-header>
+			<ion-grid>
+				<ion-row>
+					<ion-col ><b>Parcela</b></ion-col>
+					<ion-col ><b>Data Vencimento</b></ion-col>
+					<ion-col ><b>Data Pagamento</b></ion-col>
+					<ion-col ><b>Valor</b></ion-col>
+					<ion-col ><b>Situação</b></ion-col>
+				</ion-row>
+				<div *ngFor="let item2 of item.venda.parcelamento" [ngClass]="{'item-inactive': !item.venda.active }">
+					
+					<ion-row>
+						<ion-col>{{item2.data}}</ion-col>
+						<ion-col>{{item2.data}}</ion-col>
+						<ion-col>{{item2.dataPagamento}}</ion-col>
+						<ion-col>{{item2.valor}}</ion-col>
+						<ion-col>
+							<ion-label stacked="light">Pago</ion-label>
+							<ion-label color="red">Não Pago</ion-label>
+						</ion-col>
+					</ion-row>	
+				
+				</div>
+			</ion-grid>
+			<ion-row text-center>
+				<ion-col>
+					<button [disabled]="desabiltarPagamento(item)" ion-button icon-left clear small (click)="visualizarPagamentos(item);">
+						<ion-icon name="card"></ion-icon>
+						<div>Pagamentos</div>
+					</button>
+				</ion-col>
+				<ion-col>
+					<a href="tel:{{ item.venda.telefone }}" ion-button icon-left clear small>
+						<ion-icon name="call"></ion-icon>
+						<div>Ligar</div>
+					</a>
+				</ion-col>
+			</ion-row>
+		</ion-card>
+	</ion-list>
+</ion-content>

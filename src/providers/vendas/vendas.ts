@@ -54,6 +54,7 @@ export class Venda {
   pagamento: string;
   parcelamento: any;
   parcelas: number;
+  ativo: boolean;
 }
 
 export class VendaList {

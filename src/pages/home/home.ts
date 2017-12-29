@@ -10,58 +10,51 @@ export class HomePage {
   vendas: VendaList[];
   searchTerm: string = '';
   searchMarca: string = '';
-  searchDataInicio: Date = new Date();
-  searchDataFim: Date = new Date();
-  searchNumeracao : number = 0;
-  searchPagamento : number = 0;
+  searchDataInicio: Date = null;
+  searchDataFim: Date = null;
+  searchNumeracao : null;
+  searchPagamento : null;
 
   constructor(public navCtrl: NavController, private vendasProvider: VendasProvider, private toast: ToastController) { }
 
   ionViewDidEnter() {
 
-    this.setFilteredItems();
+    this.pesquisar();
 
-    this.vendasProvider.getAll()
-      .then((result) => {
-        this.vendas = result;
-      });
+    // this.vendasProvider.getAll()
+    //   .then((result) => {
+    //     this.vendas = result;
+    //   });
   }
 
-  setFilteredItems() {
+  desabiltarPagamento(item){
+    return item.venda.pagamento === '1';
+  }
+
+  pesquisar(){
     this.vendasProvider.getAll().then((result) => {
-      this.vendas = this.filterItems(this.searchTerm, result);
-    });    
+      this.vendas = result;
+
+      if(this.searchTerm && this.searchTerm !== '')
+        this.vendas = this.filterItems(this.searchTerm, this.vendas);
+
+      if(this.searchDataInicio)
+        this.vendas = this.filterItemsPorDataInicio(this.searchDataInicio, this.vendas);
+
+      if(this.searchDataFim)
+        this.vendas = this.filterItemsPorDataFim(this.searchDataFim, this.vendas);
+
+      if(this.searchMarca && this.searchMarca !== '')
+        this.vendas = this.filterItemsPorMarca(this.searchMarca, this.vendas);
+
+      if(this.searchNumeracao)
+        this.vendas = this.filterItemsNumeracao(this.searchNumeracao, this.vendas);
+
+      if(this.searchPagamento)
+        this.vendas = this.filterItemsPagamento(this.searchPagamento, this.vendas);
+    }); 
   }
 
-  setFilteredDataInicio(){
-  this.vendasProvider.getAll().then((result) => {
-      this.vendas = this.filterItemsPorDataInicio(this.searchDataInicio, result);
-    });    
-  }
-
-  setFilteredDataFim(){
-  this.vendasProvider.getAll().then((result) => {
-      this.vendas = this.filterItemsPorDataFim(this.searchDataFim, result);
-    });    
-  }
-
-  setFilteredMarcas() {
-    this.vendasProvider.getAll().then((result) => {
-      this.vendas = this.filterItemsPorMarca(this.searchMarca, result);
-    });    
-  }
-
-  setFilteredNumeracao() {
-    this.vendasProvider.getAll().then((result) => {
-      this.vendas = this.filterItemsNumeracao(this.searchNumeracao, result);
-    });    
-  }
-
-  setFilteredPagamento() {
-    this.vendasProvider.getAll().then((result) => {
-      this.vendas = this.filterItemsPagamento(this.searchPagamento, result);
-    });    
-  }
 
   filterItemsNumeracao(searchTerm, vendas){
     return vendas && vendas.filter((item) => {
@@ -108,9 +101,13 @@ export class HomePage {
     this.navCtrl.push('NovaVendaPage', { key: item.key, venda: item.venda });
   }
 
+  visualizarPagamentos(item: VendaList) {
+    this.navCtrl.push('PagamentosPage', { key: item.key, venda: item.venda });
+  }
+
   removeContact(item: VendaList) {
     this.vendasProvider.remove(item.key)
-      .then(() => {
+    .then(() => {
         // Removendo do array de items
         var index = this.vendas.indexOf(item);
         this.vendas.splice(index, 1);

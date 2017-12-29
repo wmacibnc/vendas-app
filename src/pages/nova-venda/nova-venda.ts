@@ -26,18 +26,19 @@ export class NovaVendaPage {
       this.model.parcelamento.push([]);
       this.model.parcelamento.push([]);
       this.model.parcelamento.push([]);
+      this.model.parcelamento.push([]);
     }
   }
 
   save() {
     this.saveVenda()
-      .then(() => {
-        this.toast.create({ message: 'Venda salvo.', duration: 3000, position: 'botton' }).present();
-        this.navCtrl.pop();
-      })
-      .catch(() => {
-        this.toast.create({ message: 'Erro ao salvar a venda.', duration: 3000, position: 'botton' }).present();
-      });
+    .then(() => {
+      this.toast.create({ message: 'Venda salva.', duration: 3000, position: 'botton' }).present();
+      this.navCtrl.pop();
+    })
+    .catch(() => {
+      this.toast.create({ message: 'Erro ao salvar a venda.', duration: 3000, position: 'botton' }).present();
+    });
   }
 
   atualizarParcelas(){
@@ -53,6 +54,14 @@ export class NovaVendaPage {
       for(this.p=0; this.p < this.model.parcelamento.length; this.p++){
         if(this.model.parcelamento[this.p] && this.model.parcelamento[this.p].valor){
           this.model.valor = (+this.model.parcelamento[this.p].valor) + (this.model.valor);
+          if(!this.key){
+            this.model.parcelamento[this.p].ativo = false;
+            this.model.parcelamento[this.p].dataPagamento = null;
+          }
+          if(this.p==0){
+           this.model.parcelamento[this.p].ativo = true;
+           this.model.parcelamento[this.p].dataPagamento = new Date();
+          }
         }
       }
     }

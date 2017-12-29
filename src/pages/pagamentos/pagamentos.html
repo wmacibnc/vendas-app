@@ -1,0 +1,59 @@
+<ion-header>
+
+	<ion-navbar>
+		<ion-title>Pagamentos</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+	<ion-item-group>
+		<ion-item-divider color="light">Cliente: {{model.nome}} - R$ {{model.valor}}</ion-item-divider>
+	</ion-item-group>
+
+	<ion-grid>
+		<ion-row>
+			<ion-col ><b>Parcela</b></ion-col>
+			<ion-col ><b>Valor</b></ion-col>
+			<ion-col ><b>Data Vencimento</b></ion-col>
+			<ion-col ><b>Data Pagamento</b></ion-col>
+			<ion-col ><b>Pago</b></ion-col>
+		</ion-row>
+		<div *ngFor="let item of model.parcelamento; let i = index">
+			<ion-row *ngIf="item.valor">
+				<ion-col>
+
+					<b *ngIf="i == 0">
+						Entrada
+					</b>
+
+					<b *ngIf="i > 0">
+						{{i}}
+					</b>
+
+				</ion-col>
+				<ion-col>R$ {{item.valor}}</ion-col>
+				<ion-col>{{item.data | date:'dd/MM/yyyy'}}</ion-col>
+				<ion-col>
+				   <ion-datetime displayFormat="DD/MM/YYYY" name="model.parcelamento[0]" [(ngModel)]="item.dataPagamento"></ion-datetime>
+				</ion-col>
+				<ion-col>
+					<ion-item>
+						<ion-label *ngIf="item.ativo">Sim</ion-label>
+						<ion-label *ngIf="!item.ativo">Não</ion-label>
+						<ion-checkbox dark  [(ngModel)]="item.ativo"></ion-checkbox>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+		</div>
+	</ion-grid>
+	<button ion-button block (click)="atualizarPagamento()">Salvar</button>
+
+	<ion-col>
+		<a href="tel:{{ model.telefone }}" ion-button icon-left clear small>
+			<ion-icon name="call"></ion-icon>
+			<div>Ligar</div>
+		</a>
+	</ion-col>
+</ion-content>

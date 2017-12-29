@@ -11,22 +11,22 @@
   <ion-label>Pesquisar</ion-label>
 
   <ion-row>
-    <ion-searchbar col-6 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()"></ion-searchbar> 
-    <ion-searchbar col-6 placeholder="por Modelo"[(ngModel)]="searchMarca" (ionInput)="setFilteredMarcas()"></ion-searchbar>   
+    <ion-searchbar col-6 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="pesquisar()"></ion-searchbar> 
+    <ion-searchbar col-6 placeholder="por Modelo"[(ngModel)]="searchMarca" (ionInput)="pesquisar()"></ion-searchbar>   
   </ion-row>
 
   <ion-row>
     <ion-row col-6>
       <ion-item>
-        <ion-label stacked>Data da Venda</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicio" (ngModelChange)="setFilteredDataInicio()"></ion-datetime>
+        <ion-label stacked>por Data Inicio</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicio" (ngModelChange)="pesquisar()"></ion-datetime>
       </ion-item>
     </ion-row>
 
     <ion-row col-6>
      <ion-item>
       <ion-label stacked>por Data Fim</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFim" (ngModelChange)="setFilteredDataFim()"></ion-datetime> 
+      <ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFim" (ngModelChange)="pesquisar()"></ion-datetime> 
     </ion-item>
   </ion-row>
 </ion-row>
@@ -35,7 +35,7 @@
  <ion-list col-6>
   <ion-item>
     <ion-label stacked>por Numeração</ion-label>
-    <ion-select [(ngModel)]="searchNumeracao" (ngModelChange)="setFilteredNumeracao()">
+    <ion-select [(ngModel)]="searchNumeracao" (ngModelChange)="pesquisar()">
       <ion-option value=38>38</ion-option>
       <ion-option value=39>39</ion-option>
       <ion-option value=40>40</ion-option>
@@ -50,7 +50,7 @@
 <ion-list col-6>
   <ion-item>
     <ion-label stacked>por Forma Pagamento</ion-label>
-    <ion-select [(ngModel)]="searchPagamento" (ngModelChange)="setFilteredPagamento()">
+    <ion-select [(ngModel)]="searchPagamento" (ngModelChange)="pesquisar()">
      <ion-option value="1">À vista</ion-option>
      <ion-option value="2">Parcelado</ion-option>
    </ion-select>
@@ -89,6 +89,12 @@
     </ion-card-content>
 
     <ion-row text-center>
+      <ion-col>
+        <button [disabled]="desabiltarPagamento(item)" ion-button icon-left clear small (click)="visualizarPagamentos(item);">
+          <ion-icon name="card"></ion-icon>
+          <div>Pagamentos</div>
+        </button>
+      </ion-col>
       <ion-col>
         <button ion-button icon-left clear small (click)="editContact(item);">
           <ion-icon name="create"></ion-icon>
