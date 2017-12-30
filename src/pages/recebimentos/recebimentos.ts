@@ -15,6 +15,8 @@ export class RecebimentosPage {
 	searchDataInicio: Date = null;
 	searchDataFim: Date = null;
 	p: number;
+	q: number;
+	recebimentos = [];
 
 
 	constructor(public navCtrl: NavController, private vendasProvider: VendasProvider, public navParams: NavParams) {
@@ -29,22 +31,44 @@ export class RecebimentosPage {
 	}
 
 	desabiltarPagamento(item){
-		return item.venda.pagamento === '1';
+		return item.pagamento === '1';
 	}
 
 	pesquisar(){
 		this.vendasProvider.getAll().then((result) => {
 			this.vendas = result;
 
-			 if(this.searchTerm && this.searchTerm !== '')
+			if(this.searchTerm && this.searchTerm !== '')
 				this.vendas = this.filterItems(this.searchTerm, this.vendas);
 
-			 if(this.searchDataInicio)
+			if(this.searchDataInicio)
 				this.vendas = this.filterItemsPorDataInicio(this.searchDataInicio, this.vendas);
 
-			 if(this.searchDataFim)
-			 	this.vendas = this.filterItemsPorDataFim(this.searchDataFim, this.vendas);
+			if(this.searchDataFim)
+				this.vendas = this.filterItemsPorDataFim(this.searchDataFim, this.vendas);
 
+			
+			for(this.p=0; this.p < this.vendas.length; this.p++){
+				var recebimentos = [];
+				for(this.q=0; this.q < this.vendas[this.p].venda.parcelamento.length; this.q++){
+					if(this.vendas[this.p].venda.parcelamento[this.q].data){
+						var objetoRecebimento = {};
+						objetoRecebimento.parcela = this.q;
+						objetoRecebimento.data = this.vendas[this.p].venda.parcelamento[this.q].data;
+						objetoRecebimento.dataPagamento = this.vendas[this.p].venda.parcelamento[this.q].dataPagamento;
+						objetoRecebimento.valor = this.vendas[this.p].venda.parcelamento[this.q].valor;
+						objetoRecebimento.ativo = this.vendas[this.p].venda.parcelamento[this.q].ativo;
+						recebimentos.push(objetoRecebimento);
+					}
+				}
+				if(recebimentos && recebimentos.length > 0){
+					var objeto = {};
+					objeto.nome = this.vendas[this.p].venda.nome;
+					objeto.recebimentos = recebimentos;
+					objeto.venda = this.vendas[this.p].venda;
+					this.recebimentos.push(objeto);
+				}
+			}
 		}); 
 	}
 
@@ -66,13 +90,6 @@ export class RecebimentosPage {
 				);
 		});    
 	}
-
-  // verificarDataInicio(parcelamento){
-  // 	var retorno = false;
-  // 	 for(this.p=0; this.p < parcelamento.length; this.p++){
-  // 	 	if(parcelamento[this.p].)
-  // 	  }
-  // }
 
   filterItems(searchTerm, vendas){
   	return vendas && vendas.filter((item) => {

@@ -64,6 +64,9 @@ export class NovaVendaPage {
           }
         }
       }
+    }else{
+      this.model.parcelamento[this.p].ativo = true;
+      this.model.parcelamento[this.p].dataPagamento = new Date();
     }
     if (this.key) {
       return this.vendaProvider.update(this.key, this.model);
