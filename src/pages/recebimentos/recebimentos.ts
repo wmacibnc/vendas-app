@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { VendasProvider, VendaList, Venda } from '../../providers/vendas/vendas';
+import { VendasProvider, VendaList } from '../../providers/vendas/vendas';
 
 @IonicPage()
 @Component({
@@ -37,22 +37,38 @@ export class RecebimentosPage {
 	pesquisar(){
 		this.vendasProvider.getAll().then((result) => {
 			this.vendas = result;
-
-			if(this.searchTerm && this.searchTerm !== '')
-				this.vendas = this.filterItems(this.searchTerm, this.vendas);
-
-			if(this.searchDataInicio)
-				this.vendas = this.filterItemsPorDataInicio(this.searchDataInicio, this.vendas);
-
-			if(this.searchDataFim)
-				this.vendas = this.filterItemsPorDataFim(this.searchDataFim, this.vendas);
-
-			
+			this.recebimentos = [];			
 			for(this.p=0; this.p < this.vendas.length; this.p++){
 				var recebimentos = [];
-				for(this.q=0; this.q < this.vendas[this.p].venda.parcelamento.length; this.q++){
+				a:for(this.q=0; this.q < this.vendas[this.p].venda.parcelamento.length; this.q++){
 					if(this.vendas[this.p].venda.parcelamento[this.q].data){
-						var objetoRecebimento = {};
+						var dataPagamento = this.vendas[this.p].venda.parcelamento[this.q].dataPagamento;
+						var ativo = this.vendas[this.p].venda.parcelamento[this.q].ativo;
+						if(!dataPagamento){
+							continue a;
+						}
+						if(this.searchDataInicio){
+							var data1 = new Date(this.searchDataInicio.split("-")[0],this.searchDataInicio.split("-")[1], this.searchDataInicio.split("-")[2]);
+							if(dataPagamento.getDate){
+								var data2 = dataPagamento;
+							}else{
+								var data2 = new Date(dataPagamento.split("-")[0],dataPagamento.split("-")[1], dataPagamento.split("-")[2]);	
+							}
+							
+							 if(data1 >= data2){
+								continue a; 	
+							 } 
+						}
+
+						if(this.searchDataFim && new Date(this.searchDataFim) <= new Date(dataPagamento)){
+							continue a;
+						}
+
+						// if(ativo){
+						// 	continue a;
+						// }
+
+						var objetoRecebimento = <any>{};
 						objetoRecebimento.parcela = this.q;
 						objetoRecebimento.data = this.vendas[this.p].venda.parcelamento[this.q].data;
 						objetoRecebimento.dataPagamento = this.vendas[this.p].venda.parcelamento[this.q].dataPagamento;
@@ -69,32 +85,19 @@ export class RecebimentosPage {
 					this.recebimentos.push(objeto);
 				}
 			}
+
+
+			if(this.searchTerm && this.searchTerm !== '')
+				this.recebimentos = this.filterItems(this.searchTerm, this.recebimentos);
+
 		}); 
 	}
 
 
-	filterItemsPorDataInicio(searchTerm, vendas){
+	filterItems(searchTerm, vendas){
 		return vendas && vendas.filter((item) => {
-			return item && item.venda && item.venda.data && (
-
-				item.venda.data >= searchTerm
-
-				);
+			return item && item.venda && item.venda.nome && item.venda.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
 		});    
 	}
-
-	filterItemsPorDataFim(searchTerm, vendas){
-		return vendas && vendas.filter((item) => {
-			return item && item.venda && item.venda.data && (
-				item.venda.data <= searchTerm
-				);
-		});    
-	}
-
-  filterItems(searchTerm, vendas){
-  	return vendas && vendas.filter((item) => {
-  		return item && item.venda && item.venda.nome && item.venda.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-  	});    
-  }
 
 }

@@ -38,7 +38,6 @@
 			</ion-card-header>
 			<ion-grid>
 				<ion-row>
-					<ion-col ><b>Parcela</b></ion-col>
 					<ion-col ><b>Data Vencimento</b></ion-col>
 					<ion-col ><b>Data Pagamento</b></ion-col>
 					<ion-col ><b>Valor</b></ion-col>
@@ -47,9 +46,8 @@
 				<div *ngFor="let item2 of item.recebimentos">
 					
 					<ion-row>
-						<ion-col>{{item2.parcela}}</ion-col>
-						<ion-col>{{item2.data}}</ion-col>
-						<ion-col>{{item2.dataPagamento}}</ion-col>
+						<ion-col>{{item2.data | date:'dd/MM/yyyy'}}</ion-col>
+						<ion-col>{{item2.dataPagamento | date:'dd/MM/yyyy'}}</ion-col>
 						<ion-col>{{item2.valor}}</ion-col>
 						<ion-col>
 							<ion-label *ngIf="item2.ativo" class="pago">Pago</ion-label>
