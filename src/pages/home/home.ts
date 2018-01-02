@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
 import { VendasProvider, VendaList } from '../../providers/vendas/vendas';
 
 @Component({
@@ -15,16 +15,10 @@ export class HomePage {
   searchNumeracao : null;
   searchPagamento : null;
 
-  constructor(public navCtrl: NavController, private vendasProvider: VendasProvider, private toast: ToastController) { }
+  constructor(public navCtrl: NavController, private vendasProvider: VendasProvider, private toast: ToastController, public loadingCtrl: LoadingController) { }
 
   ionViewDidEnter() {
-
     this.pesquisar();
-
-    // this.vendasProvider.getAll()
-    //   .then((result) => {
-    //     this.vendas = result;
-    //   });
   }
 
   desabiltarPagamento(item){
@@ -93,8 +87,11 @@ export class HomePage {
   }
 
   addContact() {
-    // this.navCtrl.push('EditContactPage');
     this.navCtrl.push('NovaVendaPage');
+  }
+
+  recebimentos() {
+    this.navCtrl.push('RecebimentosPage');
   }
 
   editContact(item: VendaList) {

@@ -11,19 +11,19 @@
   <ion-label>Pesquisar</ion-label>
 
   <ion-row>
-    <ion-searchbar col-6 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="pesquisar()"></ion-searchbar> 
-    <ion-searchbar col-6 placeholder="por Modelo"[(ngModel)]="searchMarca" (ionInput)="pesquisar()"></ion-searchbar>   
+    <ion-searchbar col-12 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="pesquisar()"></ion-searchbar> 
+    <ion-searchbar col-12 placeholder="por Modelo"[(ngModel)]="searchMarca" (ionInput)="pesquisar()"></ion-searchbar>   
   </ion-row>
 
   <ion-row>
-    <ion-row col-6>
+    <ion-row col-12>
       <ion-item>
         <ion-label stacked>por Data Inicio</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicio" (ngModelChange)="pesquisar()"></ion-datetime>
       </ion-item>
     </ion-row>
 
-    <ion-row col-6>
+    <ion-row col-12>
      <ion-item>
       <ion-label stacked>por Data Fim</ion-label>
       <ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFim" (ngModelChange)="pesquisar()"></ion-datetime> 
@@ -32,7 +32,7 @@
 </ion-row>
 
 <ion-row>
- <ion-list col-6>
+ <ion-list col-12>
   <ion-item>
     <ion-label stacked>por Numeração</ion-label>
     <ion-select [(ngModel)]="searchNumeracao" (ngModelChange)="pesquisar()">
@@ -47,7 +47,7 @@
   </ion-item>
 </ion-list>
 
-<ion-list col-6>
+<ion-list col-12>
   <ion-item>
     <ion-label stacked>por Forma Pagamento</ion-label>
     <ion-select [(ngModel)]="searchPagamento" (ngModelChange)="pesquisar()">
@@ -119,6 +119,7 @@
 </ion-list>
 
 <ion-fab right bottom>
+  <button ion-fab color="primary" (click)="recebimentos()"><ion-icon name="logo-usd"></ion-icon></button>
   <button ion-fab color="primary" (click)="addContact()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 </ion-content>

@@ -12,8 +12,11 @@ export class RecebimentosPage {
 
 	vendas: VendaList[];
 	searchTerm: string = '';
-	searchDataInicio: Date = null;
-	searchDataFim: Date = null;
+	searchDataInicioVencimento: any = null;
+	searchDataFimVencimento: any = null;
+	searchDataInicioPagamento: any = null;
+	searchDataFimPagamento: any = null;
+	searchSituacao: string = '';
 	p: number;
 	q: number;
 	recebimentos = [];
@@ -31,7 +34,7 @@ export class RecebimentosPage {
 	}
 
 	desabiltarPagamento(item){
-		return item.pagamento === '1';
+		return item.venda.pagamento === '1';
 	}
 
 	pesquisar(){
@@ -43,31 +46,51 @@ export class RecebimentosPage {
 				a:for(this.q=0; this.q < this.vendas[this.p].venda.parcelamento.length; this.q++){
 					if(this.vendas[this.p].venda.parcelamento[this.q].data){
 						var dataPagamento = this.vendas[this.p].venda.parcelamento[this.q].dataPagamento;
+						var dataVencimento = this.vendas[this.p].venda.parcelamento[this.q].data;
 						var ativo = this.vendas[this.p].venda.parcelamento[this.q].ativo;
-						if(!dataPagamento){
-							continue a;
-						}
-						if(this.searchDataInicio){
-							var data1 = new Date(this.searchDataInicio.split("-")[0],this.searchDataInicio.split("-")[1], this.searchDataInicio.split("-")[2]);
-							if(dataPagamento.getDate){
-								var data2 = dataPagamento;
-							}else{
-								var data2 = new Date(dataPagamento.split("-")[0],dataPagamento.split("-")[1], dataPagamento.split("-")[2]);	
-							}
+
+						if(this.searchDataInicioVencimento){
 							
-							 if(data1 >= data2){
+							this.searchDataInicioVencimento = this.validarConverterData(this.searchDataInicioVencimento);
+							dataVencimento = this.validarConverterData(dataVencimento);
+
+							if(this.searchDataInicioVencimento >= dataVencimento){
 								continue a; 	
-							 } 
+							}
 						}
 
-						if(this.searchDataFim && new Date(this.searchDataFim) <= new Date(dataPagamento)){
-							continue a;
+						if(this.searchDataFimVencimento){
+
+							this.searchDataFimVencimento = this.validarConverterData(this.searchDataFimVencimento);
+							dataVencimento = this.validarConverterData(dataVencimento);
+
+							if(this.searchDataFimVencimento <= dataVencimento){
+								continue a; 	
+							}
 						}
 
-						// if(ativo){
-						// 	continue a;
-						// }
+						if(this.searchDataInicioPagamento && dataPagamento){
+							this.searchDataInicioPagamento = this.validarConverterData(this.searchDataInicioPagamento);
+							dataPagamento = this.validarConverterData(dataPagamento);
+							if(this.searchDataInicioPagamento >= dataPagamento){
+								continue a; 	
+							}
+						}
 
+						if(this.searchDataFimPagamento && dataPagamento){
+							this.searchDataFimPagamento = this.validarConverterData(this.searchDataFimPagamento);
+							dataPagamento = this.validarConverterData(dataPagamento);
+							if(this.searchDataFimPagamento <= dataPagamento){
+								continue a; 	
+							}
+						}
+
+						if(this.searchSituacao && this.searchSituacao != ''){
+							if(this.searchSituacao != ativo.toString()){
+								continue a;
+							}	
+						}
+						
 						var objetoRecebimento = <any>{};
 						objetoRecebimento.parcela = this.q;
 						objetoRecebimento.data = this.vendas[this.p].venda.parcelamento[this.q].data;
@@ -78,10 +101,10 @@ export class RecebimentosPage {
 					}
 				}
 				if(recebimentos && recebimentos.length > 0){
-					var objeto = {};
+					var objeto = <any> {};
 					objeto.nome = this.vendas[this.p].venda.nome;
 					objeto.recebimentos = recebimentos;
-					objeto.venda = this.vendas[this.p].venda;
+					objeto.venda = this.vendas[this.p];
 					this.recebimentos.push(objeto);
 				}
 			}
@@ -93,11 +116,21 @@ export class RecebimentosPage {
 		}); 
 	}
 
+	validarConverterData(data){
+		if(data.length == 10){
+			return new Date(data.toString().split("-")[0],(data.toString().split("-")[1])-1,data.toString().split("-")[2]);
+		}
+		return data;
+	}
 
 	filterItems(searchTerm, vendas){
 		return vendas && vendas.filter((item) => {
 			return item && item.venda && item.venda.nome && item.venda.nome.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
 		});    
 	}
+
+	visualizarPagamentos(item) {
+    	this.navCtrl.push('PagamentosPage', { key: item.venda.key, venda: item.venda.venda });
+  	}
 
 }

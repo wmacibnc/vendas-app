@@ -13,20 +13,46 @@
 
 	<ion-row>
 		<ion-searchbar col-12 placeholder="por Nome" [(ngModel)]="searchTerm" (ionInput)="pesquisar()"></ion-searchbar> 
+      <ion-list col-4>
+        <ion-item>
+          <ion-label stacked>Situação</ion-label>
+          <ion-select [(ngModel)]="searchSituacao" (ngModelChange)="pesquisar()">
+          	<ion-option value="">Selecione</ion-option>
+            <ion-option value="true">Pago</ion-option>
+            <ion-option value="false">Não Pago</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
 	</ion-row>
 
-	<ion-row>
-		<ion-row col-6>
+	<ion-row *ngIf="searchSituacao === 'false' " >
+		<ion-row col-12>
 			<ion-item>
-				<ion-label stacked>por Data Inicio</ion-label>
-				<ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicio" (ngModelChange)="pesquisar()"></ion-datetime>
+				<ion-label stacked>por Data Vencimento Inicio</ion-label>
+				<ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicioVencimento" (ngModelChange)="pesquisar()"></ion-datetime>
 			</ion-item>
 		</ion-row>
 
 		<ion-row col-6>
 			<ion-item>
-				<ion-label stacked>por Data Fim</ion-label>
-				<ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFim" (ngModelChange)="pesquisar()"></ion-datetime> 
+				<ion-label stacked>por Data Vencimento Fim</ion-label>
+				<ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFimVencimento" (ngModelChange)="pesquisar()"></ion-datetime> 
+			</ion-item>
+		</ion-row>
+	</ion-row>
+
+	<ion-row *ngIf="searchSituacao === 'true' " >
+		<ion-row col-6>
+			<ion-item>
+				<ion-label stacked>por Data Pagamento Inicio</ion-label>
+				<ion-datetime displayFormat="DD/MM/YYYY" name="data" [(ngModel)]="searchDataInicioPagamento" (ngModelChange)="pesquisar()"></ion-datetime>
+			</ion-item>
+		</ion-row>
+
+		<ion-row col-6>
+			<ion-item>
+				<ion-label stacked>por Data Pagamento Fim</ion-label>
+				<ion-datetime displayFormat="DD/MM/YYYY" name="data"  [(ngModel)]="searchDataFimPagamento" (ngModelChange)="pesquisar()"></ion-datetime> 
 			</ion-item>
 		</ion-row>
 	</ion-row>
@@ -59,7 +85,7 @@
 			</ion-grid>
 			<ion-row text-center>
 				<ion-col>
-					<button [disabled]="desabiltarPagamento(item.venda)" ion-button icon-left clear small (click)="visualizarPagamentos(item.venda);">
+					<button [disabled]="desabiltarPagamento(item.venda)" ion-button icon-left clear small (click)="visualizarPagamentos(item);">
 						<ion-icon name="card"></ion-icon>
 						<div>Pagamentos</div>
 					</button>
